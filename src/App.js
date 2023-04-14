@@ -33,6 +33,23 @@ function App() {
     };
   }, [birdPosition, gameHasStarted]);
 
+  useEffect(() => {
+    let obstacleId;
+    if (gameHasStarted && obstacleLeft >= -OBSTACLE_WIDTH) {
+      obstacleId = setInterval(() => {
+        setObstacleLeft((obstacleLeft) => obstacleLeft - 5);
+      }, 24);
+
+      return () => {
+        clearInterval(obstacleId);
+      };
+    }
+    else {
+      setObstacleLeft(GAME_WIDTH - OBSTACLE_WIDTH);
+      setObstacleHeight(Math.floor(Math.random() * (GAME_HEIGHT - OBSTACLE_GAP)));
+    }
+  })
+
   const handleClick = () => {
     let newBirdPosition = birdPosition - JUMP_HEIGHT;
     if (!gameHasStarted) {
